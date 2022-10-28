@@ -1,0 +1,11 @@
+{
+    "player1": {
+        "pass": "12345",
+        "count": 13
+    },
+    "player2": {
+        "pass": "good_password",
+        "count": 98
+    }
+
+}
