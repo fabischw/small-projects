@@ -73,6 +73,7 @@ def init_encrypt():
     # save a hashed value of the key in a file to prevent issues when decrypting files
     encoded_key = key.encode()
     hashed_key = hashlib.sha256(encoded_key).hexdigest()
+    md5_hashed_key = hashlib.md5(encoded_key).hexdigest()
 
     filename = path.stem
     
@@ -83,7 +84,7 @@ def init_encrypt():
 
     print("Starting encryption process !")
 
-    #encrypt(file_path,key)#actually encrypting the file
+    encrypt(file_path,bytes(md5_hashed_key, encoding="utf-8"))#actually encrypting the file
     print("encryption process successfull")
 
 
@@ -108,6 +109,7 @@ def init_decrypt():
     # save a hashed value of the key in a file to prevent issues when decrypting files
     encoded_key = key.encode()
     hashed_key = hashlib.sha256(encoded_key).hexdigest()
+    md5_hashed_key = hashlib.md5(encoded_key).hexdigest()
 
     filename = path.stem
     
@@ -123,7 +125,7 @@ def init_decrypt():
         print("key correct, starting decryption process !")
 
 
-    #decrypt(file_path,key)# actually decrypting the file
+    decrypt(file_path,bytes(md5_hashed_key, encoding="utf-8"))# actually decrypting the file
     print("decryption process successfull")
 
 
