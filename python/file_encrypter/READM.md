@@ -9,3 +9,4 @@ This is a small script to encrypt / decrypt files, nothing special, just a small
 ### files which this script has been tested on:
 
 
+# NOT FUNCTIONAL YET

@@ -23,10 +23,10 @@ def encrypt(filepath,key):
 
     #encrypting the file itself
     fernet = Fernet(key)
-    with open(filepath, "rb") as file:
+    with open(filepath, "rb") as file:#reading data
         original = file.read()
-    encrypted = fernet.encrypt(original)
-    with open(filepath, "wb") as encrypted_file:
+    encrypted = fernet.encrypt(original)#encrypting data
+    with open(filepath, "wb") as encrypted_file:#writing the data again
         encrypted_file.write(encrypted)
 
 
@@ -40,10 +40,10 @@ def decrypt(filepath,key):
 
 
     fernet = Fernet(key)
-    with open(filepath, "rb") as enc_file:
+    with open(filepath, "rb") as enc_file:#reading data
         encrypted = enc_file.read()
-    decrypted = fernet.decrypt(encrypted)
-    with open(filepath, "wb") as file:
+    decrypted = fernet.decrypt(encrypted)#decrypting data
+    with open(filepath, "wb") as file:#writing the data again
         file.write(decrypted)
 
 
@@ -58,22 +58,23 @@ def init_encrypt():
     This function provides all the other funcionality required to encrypt the file
     """
 
+    #getting the file path
     file_path = input("Please paste the file path in here (full path to the file itself, NOT the folder in which the file is!\n")
     path = pathlib.Path(file_path)
 
-    if not os.path.exists(file_path):
+    if not os.path.exists(file_path):#checking if the file path exists
         print("file was not found.")
         quit()
 
     here = pathlib.Path(__file__).parent
     hash_folder = here / "key_hashes"
-    key = input("Please input a key:\n")
+    key = input("Please input a key:\n")#getting the key
 
 
     # save a hashed value of the key in a file to prevent issues when decrypting files
     encoded_key = key.encode()
     hashed_key = hashlib.sha256(encoded_key).hexdigest()
-    md5_hashed_key = hashlib.md5(encoded_key).hexdigest()
+    md5_hashed_key = hashlib.md5(encoded_key).hexdigest()# get a md5 hash for encrypting the file
 
     filename = path.stem
     
@@ -93,23 +94,27 @@ def init_encrypt():
 
 
 def init_decrypt():
+    """
+    This function provides all the other funcionality required to decrypt the file
+    """
 
+    #getting the file path
     file_path = input("Please paste the file path in here (full path to the file itself, NOT the folder in which the file is!\n")
     path = pathlib.Path(file_path)
 
-    if not os.path.exists(file_path):
+    if not os.path.exists(file_path):#checking if the file path exists
         print("file was not found.")
         quit()
 
     here = pathlib.Path(__file__).parent
     hash_folder = here / "key_hashes"
-    key = input("Please input a key:\n")
+    key = input("Please input a key:\n")#getting the key
 
 
-    # save a hashed value of the key in a file to prevent issues when decrypting files
+    # get the hashed key to compare to saves
     encoded_key = key.encode()
     hashed_key = hashlib.sha256(encoded_key).hexdigest()
-    md5_hashed_key = hashlib.md5(encoded_key).hexdigest()
+    md5_hashed_key = hashlib.md5(encoded_key).hexdigest()# get a md5 hash for encrypting the file
 
     filename = path.stem
     
@@ -118,9 +123,13 @@ def init_decrypt():
     with open(path_to_hash,"r") as file:
         actual_hash = file.readline()
 
+    #checking if the saved hash is correct (does a password check, HOWEVER, since there is not a save for every encrypted file, their might be errors)
     if actual_hash != hashed_key:
-        print("key is not correct")
-        quit()
+        continue_choice = input("key might be incorrect. Do you want to continue (might damage the file and it's contents) ?(Y/N)")
+        if continue_choice == "Y":
+            pass
+        else:
+            quit
     else:
         print("key correct, starting decryption process !")
 
